@@ -2,23 +2,23 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {Counter} from "../src/Counter.sol";
+import {Counter, publicInputHash} from "../src/Counter.sol";
 
 contract CounterTest is Test {
     Counter public counter;
 
     function setUp() public {
         counter = new Counter();
-        counter.setNumber(0);
     }
 
-    function test_Increment() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
+    function test_value() public view {
+        (bytes32 publicInputHashOld, bytes32 publicInputHashNew) = counter.calcPublicInputHash();
+        console.logString("publicInputHashNew:");
+        console.logBytes32(publicInputHashNew);
+        console.logString("publicInputHashOld:");
+        console.logBytes32(publicInputHashOld);
+        console.logString("publicInputHash:");
+        console.logBytes32(publicInputHash);
+        assertEq(publicInputHash, publicInputHashOld);
     }
 }
