@@ -11,7 +11,7 @@ contract CounterTest is Test {
         counter = new Counter();
     }
 
-    function test_value() public view {
+    function test_calc() public view {
         (bytes32 publicInputHashOld, bytes32 publicInputHashNew) = counter.calcPublicInputHash();
         console.logString("publicInputHashNew:");
         console.logBytes32(publicInputHashNew);
@@ -20,5 +20,15 @@ contract CounterTest is Test {
         console.logString("publicInputHash:");
         console.logBytes32(publicInputHash);
         assertEq(publicInputHash, publicInputHashOld);
+    }
+
+    function test_initial_calc() public view {
+        bytes32 inputPublicHash = counter.calcInitialPublicInputHash(763374);
+        bytes32 expectedHash = 0x902522c1891b96282f0177ab52585ecd8a4388106a68d57aaccbca2eeddb87d8;
+        console.logString("inputPublicHash:");
+        console.logBytes32(inputPublicHash);
+        console.logString("expectedHash:");
+        console.logBytes32(expectedHash);
+        assertEq(inputPublicHash, expectedHash);
     }
 }
